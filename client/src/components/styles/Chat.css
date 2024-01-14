@@ -25,6 +25,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 1em;
   color: #f0ebd8;
+  overflow-y: auto;
 }
 
 .controls {
@@ -89,9 +90,9 @@
 }
 
 .send-btn svg {
-    height:3vh !important;
+  height: 3vh !important;
 }
 
 .end-btn svg {
-    height:3vh !important;
+  height: 3vh !important;
 }

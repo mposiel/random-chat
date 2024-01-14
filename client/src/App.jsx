@@ -12,7 +12,6 @@ import {
 import { Chat } from "./components/Chat";
 import { Home } from "./components/Home";
 
-const socket = io("http://localhost:3001");
 
 function App() {
   const router = createBrowserRouter(

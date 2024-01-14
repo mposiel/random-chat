@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Message = ({ author, messages }) => {
+export const Message = ({ author, messages }) => {
     return (
         <div>
             <h3>{author}</h3>
@@ -11,4 +11,4 @@ const Message = ({ author, messages }) => {
     );
 };
 
-export default Message;
+
