@@ -1,0 +1,56 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding:1em;
+}
+
+.content .head-text {
+    max-width: 600px;
+    margin-bottom: 1em;
+}
+
+.content .head-text h1 {
+    font-size: 2rem;
+    color: #F0EBD8;
+}
+
+.content .lower-text {
+    max-width: 600px;
+
+}
+
+.content .lower-text p {
+    font-size: 1rem;
+    color: #F0EBD8;
+    margin-bottom: 2em;
+
+}
+
+.content .lower-text button {
+    height: 2.4rem;
+    width: 9rem;
+    padding: 0.5em 1em;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    color: #0d1321;
+    background-color: #F0EBD8;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.05s;
+}
+
+.content .lower-text button:hover {
+    font-size: 1.05rem;
+}
+
+.content .lower-text button:active {
+    font-size: 1rem;
+    color: #0d1321;
+    background-color: #a7a7a7;
+}
+

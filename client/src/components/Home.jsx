@@ -1,4 +1,35 @@
+import "./styles/Home.css";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 export const Home = () => {
-    return <h1>Home</h1>;
+  const navigate = useNavigate();
+  const startChat = () => {
+    navigate("/chat");
   };
-  
+
+  return (
+    <>
+      <div className="content">
+        <div className="head-text">
+          <h1>
+            Welcome to RandomChat – <br />
+            where connections happen naturally!
+          </h1>
+        </div>
+        <div className="lower-text">
+          <p>
+            Discover interesting conversations with random people from around
+            the world. Make new friends, share experiences, and embrace the joy
+            of spontaneous connections. Start chatting now and let the
+            randomness unfold!
+          </p>
+
+          <button className="start-btn" onClick={startChat}>
+            Start chatting
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};

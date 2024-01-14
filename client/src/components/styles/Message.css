@@ -1,0 +1,22 @@
+/* Add some basic styling to the Message component */
+
+/* Container */
+.Message {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Author */
+.Message h3 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Messages */
+.Message p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 5px;
+}

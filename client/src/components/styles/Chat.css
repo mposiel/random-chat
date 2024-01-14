@@ -1,0 +1,89 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  max-width: 1000px;
+  padding: 0.2em;
+  border-radius: 10px;
+}
+
+.chat-window {
+  margin-bottom: 20px;
+  height: 90%;
+  width: 95%;
+  background-color: #1d2d44;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 1em;
+  color: #f0ebd8;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  height: 6%;
+}
+
+.input,
+.send-btn,
+.end-btn {
+  height: 100%;
+  border-radius: 10px;
+  color: #ffffff;
+  background-color: #1d2d44;
+  border: none;
+  cursor: pointer;
+  transition: 0.05s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.send-btn:hover,
+.end-btn:hover {
+  background-color: #3e5c76;
+}
+
+.input {
+  width: 80%;
+}
+
+.input input {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  border: none;
+  padding: 0.5em;
+  background-color: #1d2d44;
+  color: #f0ebd8;
+  font-size: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.input input:focus {
+  outline: 2px solid #3e5c76; /* Change the color to your preference */
+}
+
+.send-btn {
+  margin-left: 2%;
+  width: 10%;
+  color: #f0ebd8;
+}
+
+.end-btn {
+  margin-left: 2%;
+  width: 10%;
+  color: #f0ebd8;
+}
