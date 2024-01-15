@@ -2,21 +2,20 @@
 
 /* Container */
 .Message {
-    background-color: #f5f5f5;
-    padding: 10px;
+    background-color: #1d2d44;
     border-radius: 5px;
 }
 
 /* Author */
 .Message h3 {
-    color: #333;
+    color: #f0ebd8;
     font-size: 18px;
     margin-bottom: 10px;
 }
 
 /* Messages */
 .Message p {
-    color: #666;
+    color: #f0ebd8;
     font-size: 14px;
-    margin-bottom: 5px;
+    
 }

@@ -38,7 +38,6 @@ export const Chat = () => {
 
       displayMessage({ messages: tempMessages, author: "You" });
       setMessageSent("");
-
     }
   };
 
