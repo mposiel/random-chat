@@ -18,52 +18,61 @@ const io = new Server(server, {
 let usersWaiting = [];
 let activeRooms = [];
 
+function random_user(users) {
+  return users[Math.floor(Math.random() * users.length)];
+}
 
 io.on("connection", (socket) => {
   console.log(`a user connected: ${socket.id}`);
-  //add user to waiting list
-  usersWaiting.push(socket.id);
 
+  socket.on("looking_for_match", () => {
+    console.log("looking_for_match, id:", socket.id);
+    usersWaiting.push(socket.id);
+    console.log("usersWaiting:", usersWaiting);
 
-  //check if there are enough users to create a room
-  if (usersWaiting.length >= 2) {
-    //create a room
-    let roomName = usersWaiting[0] + usersWaiting[1];
-    
-    //add room to active rooms
-    activeRooms.push(roomName);
-    //send room name to users
-    io.to(usersWaiting[0]).emit("room_created", {
-      room: roomName,
-      user: 0,
-    });
-    io.to(usersWaiting[1]).emit("room_created", {
-      room: roomName,
-      user: 1,
-    });
-    //remove users from waiting list
-    usersWaiting.splice(0, 2);
-  } else {
-    //wait for another user to join
-    socket.emit("waiting", null);
-  }
+    if (usersWaiting.length >= 2) {
+      const user1 = random_user(usersWaiting);
+      usersWaiting = usersWaiting.filter((user) => user !== user1);
+      const user2 = random_user(usersWaiting);
+      usersWaiting = usersWaiting.filter((user) => user !== user2);
 
+      const roomName = `${user1}_and_${user2}`;
 
+      io.to(user1).emit("match_found", roomName);
+      io.to(user2).emit("match_found", roomName);
 
-
-  socket.on("send_message", (data) => {
-    console.log("Data:",data);
-    //doesn not send the message
-    socket.to(data.room).emit("receive_message", data);
+      activeRooms.push(roomName);
+      console.log("activeRooms:", activeRooms);
+    }
   });
 
-  socket.on("join_room", (data) => {
-    socket.join(data.room);
-    console.log(`user with ID: ${socket.id} joined room: ${data.room}`);
+  socket.on("join_room", (roomName) => {
+    console.log("join_room, id:", socket.id);
+    socket.join(roomName);
+    socket.to(roomName).emit("user_joined", socket.id);
   });
+
+  socket.on("disconnect_from_stranger", (roomName) => {
+    console.log("disconnect_from_stranger, id:", socket.id);
+    console.log("roomName:", roomName);
+    socket.to(roomName).emit("stranger_disconnected", socket.id);
+    socket.leave(roomName);
+  });
+
+  socket.on("leave_room", (roomName) => {
+    console.log("leave_room, id:", socket.id);
+    socket.leave(roomName);
+    activeRooms = activeRooms.filter((room) => !room.includes(socket.id));
+  });
+
+
 
   socket.on("disconnect", () => {
-    console.log(`user ${socket.id} disconnected`);
+    console.log(`user disconnected: ${socket.id}`);
+    usersWaiting = usersWaiting.filter((user) => user !== socket.id);
+    console.log("usersWaiting:", usersWaiting);
+    activeRooms = activeRooms.filter((room) => !room.includes(socket.id));
+    console.log("activeRooms:", activeRooms);
   });
 });
 

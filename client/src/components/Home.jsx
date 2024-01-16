@@ -1,10 +1,14 @@
 import "./styles/Home.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { socket } from "../socket.jsx";
+
 
 export const Home = () => {
   const navigate = useNavigate();
   const startChat = () => {
+    console.log("looking for match");
+    socket.emit("looking_for_match");
     navigate("/chat");
   };
 
