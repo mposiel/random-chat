@@ -3,10 +3,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../socket.jsx";
 
-
-export const Home = () => {
+export const Home = ({ updateActiveState }) => {
   const navigate = useNavigate();
+
   const startChat = () => {
+    updateActiveState(true);
     console.log("looking for match");
     socket.emit("looking_for_match");
     navigate("/chat");
