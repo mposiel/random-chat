@@ -4,12 +4,13 @@
 .Message {
     background-color: #1d2d44;
     border-radius: 5px;
+    margin-bottom: 20px;
 }
 
 /* Author */
 .Message h3 {
     color: #f0ebd8;
-    font-size: 18px;
+    font-size: 1.3rem;
     margin-bottom: 10px;
 }
 

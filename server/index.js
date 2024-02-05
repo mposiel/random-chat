@@ -21,6 +21,11 @@ let activeRooms = [];
 function random_user(users) {
   return users[Math.floor(Math.random() * users.length)];
 }
+let roomNumber = 0;
+
+function getRoomName() {
+  return `room_${roomNumber++}`;
+}
 
 io.on("connection", (socket) => {
   console.log(`a user connected: ${socket.id}`);
@@ -36,10 +41,10 @@ io.on("connection", (socket) => {
       const user2 = random_user(usersWaiting);
       usersWaiting = usersWaiting.filter((user) => user !== user2);
 
-      const roomName = `${user1}_and_${user2}`;
+      const roomName = getRoomName();
 
-      io.to(user1).emit("match_found", roomName);
-      io.to(user2).emit("match_found", roomName);
+      io.to(user1).emit("match_found", { roomID : roomName, myID: user1});
+      io.to(user2).emit("match_found", { roomID : roomName, myID: user2});
 
       activeRooms.push(roomName);
       console.log("activeRooms:", activeRooms);
@@ -50,6 +55,13 @@ io.on("connection", (socket) => {
     console.log("join_room, id:", socket.id);
     socket.join(roomName);
     socket.to(roomName).emit("user_joined", socket.id);
+  });
+
+  socket.on("send_message", (data) => {
+    console.log("send_message, id:", socket.id);
+    console.log(`roomName: '${data.roomID}'`);
+    console.log("message:", data.message);
+    socket.to(data.roomID).emit("receive_message", data);
   });
 
   socket.on("disconnect_from_stranger", (roomName) => {
@@ -64,8 +76,6 @@ io.on("connection", (socket) => {
     socket.leave(roomName);
     activeRooms = activeRooms.filter((room) => !room.includes(socket.id));
   });
-
-
 
   socket.on("disconnect", () => {
     console.log(`user disconnected: ${socket.id}`);

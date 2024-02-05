@@ -6,77 +6,123 @@ import {
   mdiStopCircleOutline,
 } from "@mdi/js";
 import { mdiAccount } from "@mdi/js";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Message } from "./Message.jsx";
 import Waiting from "./Waiting.jsx";
 import { socket } from "../socket.jsx";
 
-let curUser = 0;
-//you - 1
-//stranger - 2
-let tempMessages = [];
 
 export const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [messageSent, setMessageSent] = useState("");
-  const [messageReceived, setMessageReceived] = useState("");
   const [loading, setLoading] = useState(true);
-  const [roomID, setRoomID] = useState("");
 
+
+  const curUser = useRef(0);
+  //you - 1
+  //stranger - 2
+  const tempMessages = useRef([]);
+  const roomID = useRef("");
+  const userID = useRef("");
+  const uniqueMessageKey = useRef(0);
+
+  
   const displayMessage = (data) => {
-    setMessages([
-      ...messages,
-      <Message author={data.author} messages={data.messages} />,
-    ]);
+    const newMessage = (
+      <Message
+        key={uniqueMessageKey.current}
+        author={data.author}
+        messages={data.messages}
+      />
+    );
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    uniqueMessageKey.current++;
   };
 
+
   useEffect(() => {
-    socket.on("connect", () => {
+    const handleConnect = () => {
       console.log("connected");
-    });
+    };
 
-    socket.on("match_found", (data) => {
-      console.log("match found, room id: " + data);
+    const handleMatchFound = (data) => {
+      console.log("match found, room id: " + data.roomID);
+      console.log("your ID:" + data.myID);
       setLoading(false);
-      setRoomID(data);
-      socket.emit("join_room", data);
-    });
+      roomID.current = data.roomID;
+      userID.current = data.myID;
+      socket.emit("join_room", data.roomID);
+    };
 
-    socket.on("stranger_disconnected", (data) => {
+    const handleStrangerDisconnected = (data) => {
       console.log("stranger disconnected, leaving the room");
-      socket.emit("leave_room", roomID);
-      setRoomID("");
-    });
-  });
+      socket.emit("leave_room", data.roomID);
+      roomID.current = "";
+    };
+
+    const handleReceiveMessage = (data) => {
+      console.log("data received: " + data);
+
+      if (curUser.current === 0 || curUser.current === 2) {
+        tempMessages.current.push(data.message);
+        setMessages(messages.slice(0, -1));
+        curUser.current = 2;
+      } else {
+        tempMessages.current = [];
+        tempMessages.current.push(data.message);
+        curUser.current = 2;
+      }
+
+      displayMessage({ messages: tempMessages.current, author: "Stranger" });
+      curUser.current = 2;
+    };
+
+    socket.on("connect", handleConnect);
+    socket.on("match_found", handleMatchFound);
+    socket.on("stranger_disconnected", handleStrangerDisconnected);
+    socket.on("receive_message", handleReceiveMessage);
+
+    return () => {
+      socket.off("connect", handleConnect);
+      socket.off("match_found", handleMatchFound);
+      socket.off("stranger_disconnected", handleStrangerDisconnected);
+      socket.off("receive_message", handleReceiveMessage);
+    };
+  }, [socket, roomID.current]);
 
   const sendMessage = () => {
-    if (roomID === "") {
+    if (roomID.current !== "") {
       if (messageSent.trim() !== "") {
         console.log(messageSent);
-
-        if (curUser === 0 || curUser === 1) {
-          tempMessages.push(messageSent);
-          messages.pop();
-          setMessages(messages);
-          curUser = 1;
+        if (curUser.current === 0) {
+          tempMessages.current.push(messageSent);
+          curUser.current = 1;
+        } else if (curUser.current === 1) {
+          tempMessages.current.push(messageSent);
+          setMessages(messages.slice(0, -1));
+          curUser.current = 1;
         } else {
-          tempMessages = [];
-          tempMessages.push(messageSent);
-          curUser = 1;
+          tempMessages.current = [];
+          tempMessages.current.push(messageSent);
+          curUser.current = 1;
         }
 
-        displayMessage({ messages: tempMessages, author: "You" });
-        setMessageSent("");ls
-        
+        displayMessage({ messages: tempMessages.current, author: "You" });
+        setMessageSent("");
+        socket.emit("send_message", {
+          message: messageSent,
+          author: userID.current,
+          roomID: roomID.current,
+        });
       }
     }
   };
 
   const leaveChat = () => {
-    if (roomID !== "") {
+    if (roomID.current !== "") {
       console.log("leaving chat");
-      socket.emit("disconnect_from_stranger", roomID);
-      setRoomID("");
+      socket.emit("disconnect_from_stranger", roomID.current);
+      roomID.current = "";
     }
   };
 
