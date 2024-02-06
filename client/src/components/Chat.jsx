@@ -9,16 +9,16 @@ import { mdiAccount } from "@mdi/js";
 import { useEffect, useState, useRef } from "react";
 import { Message } from "./Message.jsx";
 import Waiting from "./Waiting.jsx";
+import { ChatStop } from "./ChatStop.jsx";
 import { socket } from "../socket.jsx";
 
 export const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [messageSent, setMessageSent] = useState("");
   const [loading, setLoading] = useState(true);
+  const [stopChat, setStopChat] = useState(false);
+  const [whoLeft, setWhoLeft] = useState("");
 
-  const curUser = useRef(0);
-  //you - 1
-  //stranger - 2
   const roomID = useRef("");
   const userID = useRef("");
   const uniqueMessageKey = useRef(0);
@@ -49,16 +49,17 @@ export const Chat = () => {
       socket.emit("join_room", data.roomID);
     };
 
-    const handleStrangerDisconnected = (data) => {
+    const handleStrangerDisconnected = () => {
       console.log("stranger disconnected, leaving the room");
-      socket.emit("leave_room", data.roomID);
+      socket.emit("leave_room", roomID.current);
       roomID.current = "";
+      setWhoLeft("Stranger");
+      setStopChat(true);
     };
 
     const handleReceiveMessage = (data) => {
-      console.log("data received: " + data);
+      // console.log("data received: " + data);
       displayMessage({ message: data.message, author: "Stranger" });
-      curUser.current = 2;
     };
 
     socket.on("connect", handleConnect);
@@ -77,9 +78,6 @@ export const Chat = () => {
   const sendMessage = () => {
     if (roomID.current !== "") {
       if (messageSent.trim() !== "") {
-        console.log(messageSent);
-        curUser.current = 1;
-
         displayMessage({ message: messageSent, author: "You" });
         setMessageSent("");
         socket.emit("send_message", {
@@ -95,8 +93,20 @@ export const Chat = () => {
     if (roomID.current !== "") {
       console.log("leaving chat");
       socket.emit("disconnect_from_stranger", roomID.current);
+      socket.emit("leave_room", data.roomID);
       roomID.current = "";
+      setWhoLeft("You");
+      setStopChat(true);
     }
+  };
+
+  const handleNewConnection = () => {
+    setStopChat(false);
+    setLoading(true);
+    setMessages([]);
+    setMessageSent("");
+    uniqueMessageKey.current = 0;
+    socket.emit("looking_for_match");
   };
 
   return (
@@ -104,7 +114,11 @@ export const Chat = () => {
       <div className="content">
         <div className="container">
           <div className="chat-window">
-            <h1>Chat</h1>
+            {stopChat ? (
+              <ChatStop whoLeft={whoLeft} onClick={handleNewConnection} />
+            ) : (
+              <h1>Chat</h1>
+            )}
             <div className="messages">{loading ? <Waiting /> : messages}</div>
           </div>
           <div className="controls">

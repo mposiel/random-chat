@@ -77,6 +77,12 @@ io.on("connection", (socket) => {
     activeRooms = activeRooms.filter((room) => !room.includes(socket.id));
   });
 
+  socket.on("disconnecting", () => {
+    console.log(socket.rooms);
+    let temp = Array.from(socket.rooms);
+    socket.to(temp[1]).emit("stranger_disconnected");
+  });
+
   socket.on("disconnect", () => {
     console.log(`user disconnected: ${socket.id}`);
     usersWaiting = usersWaiting.filter((user) => user !== socket.id);

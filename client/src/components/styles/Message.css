@@ -4,7 +4,7 @@
 .message_You {
     padding: 10px;
     background-color: #253a57;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-bottom: 20px;
     margin-left: auto;
     margin-right: 0;
@@ -29,7 +29,7 @@
 .message_Stranger{
     padding: 10px;
     background-color: #253a57;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-bottom: 20px;
     width: 70%;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
