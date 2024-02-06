@@ -1,7 +1,8 @@
-1. Change the way messages are displayed
-   - sent messages on the right, recieved on the left,
-   - stop grouping messages (to do in the future)
-   
+
 2. Add disconnecting logic
+   - when user clicks stop, then the room gets info that other user left,
+   - when user clicks stop, he is offered a button to find new chat.
+   - when user gets info that other user left, he is offered a button to find new chat.
+   - when user disconnects, the room info that other user left
 
 3. Add a possibility to choose language. 

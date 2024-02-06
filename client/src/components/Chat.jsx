@@ -93,7 +93,7 @@ export const Chat = () => {
     if (roomID.current !== "") {
       console.log("leaving chat");
       socket.emit("disconnect_from_stranger", roomID.current);
-      socket.emit("leave_room", data.roomID);
+      socket.emit("leave_room", roomID.current);
       roomID.current = "";
       setWhoLeft("You");
       setStopChat(true);

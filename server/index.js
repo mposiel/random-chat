@@ -10,7 +10,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "http://10.10.100.165:5173",
     methods: ["GET", "POST"],
   },
 });
@@ -43,8 +43,8 @@ io.on("connection", (socket) => {
 
       const roomName = getRoomName();
 
-      io.to(user1).emit("match_found", { roomID : roomName, myID: user1});
-      io.to(user2).emit("match_found", { roomID : roomName, myID: user2});
+      io.to(user1).emit("match_found", { roomID: roomName, myID: user1 });
+      io.to(user2).emit("match_found", { roomID: roomName, myID: user2 });
 
       activeRooms.push(roomName);
       console.log("activeRooms:", activeRooms);
@@ -92,6 +92,14 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3001, () => {
-  console.log("listening on port:3001");
+// server.listen(3001, () => {
+//   console.log("listening on port:3001");
+// });
+
+
+const host = '10.10.100.165';
+const port = 3001;
+
+server.listen(port, host, () => {
+  console.log(`Server is running at http://${host}:${port}`);
 });

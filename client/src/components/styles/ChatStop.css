@@ -14,10 +14,11 @@
 }
 
 .user_disconnected button {
-    text-align: right;
+    text-align: center;
     background-color: #f0ebd8;
     color: #0d1321;
     height: 2em;
+    width: 10em;
     padding: 0.3rem;
     border: none;
     border-radius: 5px;
