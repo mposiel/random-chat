@@ -11,34 +11,29 @@ import { Message } from "./Message.jsx";
 import Waiting from "./Waiting.jsx";
 import { socket } from "../socket.jsx";
 
-
 export const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [messageSent, setMessageSent] = useState("");
   const [loading, setLoading] = useState(true);
 
-
   const curUser = useRef(0);
   //you - 1
   //stranger - 2
-  const tempMessages = useRef([]);
   const roomID = useRef("");
   const userID = useRef("");
   const uniqueMessageKey = useRef(0);
 
-  
   const displayMessage = (data) => {
     const newMessage = (
       <Message
         key={uniqueMessageKey.current}
         author={data.author}
-        messages={data.messages}
+        message={data.message}
       />
     );
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    setMessages((prevMessages) => [newMessage, ...prevMessages]);
     uniqueMessageKey.current++;
   };
-
 
   useEffect(() => {
     const handleConnect = () => {
@@ -62,18 +57,7 @@ export const Chat = () => {
 
     const handleReceiveMessage = (data) => {
       console.log("data received: " + data);
-
-      if (curUser.current === 0 || curUser.current === 2) {
-        tempMessages.current.push(data.message);
-        setMessages(messages.slice(0, -1));
-        curUser.current = 2;
-      } else {
-        tempMessages.current = [];
-        tempMessages.current.push(data.message);
-        curUser.current = 2;
-      }
-
-      displayMessage({ messages: tempMessages.current, author: "Stranger" });
+      displayMessage({ message: data.message, author: "Stranger" });
       curUser.current = 2;
     };
 
@@ -94,20 +78,9 @@ export const Chat = () => {
     if (roomID.current !== "") {
       if (messageSent.trim() !== "") {
         console.log(messageSent);
-        if (curUser.current === 0) {
-          tempMessages.current.push(messageSent);
-          curUser.current = 1;
-        } else if (curUser.current === 1) {
-          tempMessages.current.push(messageSent);
-          setMessages(messages.slice(0, -1));
-          curUser.current = 1;
-        } else {
-          tempMessages.current = [];
-          tempMessages.current.push(messageSent);
-          curUser.current = 1;
-        }
+        curUser.current = 1;
 
-        displayMessage({ messages: tempMessages.current, author: "You" });
+        displayMessage({ message: messageSent, author: "You" });
         setMessageSent("");
         socket.emit("send_message", {
           message: messageSent,
@@ -132,8 +105,7 @@ export const Chat = () => {
         <div className="container">
           <div className="chat-window">
             <h1>Chat</h1>
-
-            {loading ? <Waiting /> : messages}
+            <div className="messages">{loading ? <Waiting /> : messages}</div>
           </div>
           <div className="controls">
             <div className="input">

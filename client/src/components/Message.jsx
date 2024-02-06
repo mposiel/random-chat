@@ -1,13 +1,13 @@
 import React from "react";
 import "./styles/Message.css";
 
-export const Message = ({ author, messages }) => {
+
+
+export const Message = ({ author, message }) => {
   return (
-    <div className="Message">
+    <div className={`message_${author}`}>
       <h3>{author}</h3>
-      {messages.map((message, index) => (
-        <p key={`${author}-${index}`}>{message}</p>
-      ))}
+        <p>{message}</p>
     </div>
   );
 };

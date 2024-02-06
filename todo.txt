@@ -1,0 +1,7 @@
+1. Change the way messages are displayed
+   - sent messages on the right, recieved on the left,
+   - stop grouping messages (to do in the future)
+   
+2. Add disconnecting logic
+
+3. Add a possibility to choose language. 

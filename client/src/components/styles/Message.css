@@ -1,21 +1,46 @@
 /* Add some basic styling to the Message component */
 
-/* Container */
-.Message {
-    background-color: #1d2d44;
+/*message_sent*/
+.message_You {
+    padding: 10px;
+    background-color: #253a57;
     border-radius: 5px;
     margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: 0;
+    width: 70%;
+    text-align: right; 
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-/* Author */
-.Message h3 {
+.message_You h3 {
     color: #f0ebd8;
-    font-size: 1.3rem;
     margin-bottom: 10px;
 }
 
-/* Messages */
-.Message p {
+.message_You p {
+    font-size: 0.75rem;
+    word-wrap: break-word;
+}
+
+
+/*message_received*/
+
+.message_Stranger{
+    padding: 10px;
+    background-color: #253a57;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: 70%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.message_Stranger h3 {
     color: #f0ebd8;
-    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.message_Stranger p {
+    font-size: 0.75rem;
+    word-wrap: break-word;
 }
