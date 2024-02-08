@@ -3,14 +3,13 @@
   padding-left: 1em;
   padding-right: 1em;
   padding-bottom: 1em;
-  /* border: 2px solid #ffffff; */
   display: flex;
   justify-content: space-between;
 }
 
 .user_disconnected h3 {
   color: #f0ebd8;
-  text-align: left; /* Added */
+  text-align: left; 
 }
 
 .user_disconnected button {

@@ -3,6 +3,7 @@ const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
+const { getMaxListeners } = require("events");
 
 app.use(cors());
 
@@ -18,9 +19,21 @@ const io = new Server(server, {
 let usersWaiting = [];
 let activeRooms = [];
 
-function random_user(users) {
-  return users[Math.floor(Math.random() * users.length)];
+// function random_user(users) {
+//   return users[Math.floor(Math.random() * users.length)];
+// }
+
+function getMatch(users, language) {
+  for (let i = 0; i < users.length - 1; i++) {
+    if (users[i].language === language) {
+      let found = users[i];
+      usersWaiting = usersWaiting.filter((user) => user.id !== found.id);
+      return found;
+    }
+  }
+  return null;
 }
+
 let roomNumber = 0;
 
 function getRoomName() {
@@ -30,21 +43,23 @@ function getRoomName() {
 io.on("connection", (socket) => {
   console.log(`a user connected: ${socket.id}`);
 
-  socket.on("looking_for_match", () => {
+  socket.on("looking_for_match", ({ language }) => {
     console.log("looking_for_match, id:", socket.id);
-    usersWaiting.push(socket.id);
+    usersWaiting.push({ id: socket.id, language: language });
     console.log("usersWaiting:", usersWaiting);
 
     if (usersWaiting.length >= 2) {
-      const user1 = random_user(usersWaiting);
-      usersWaiting = usersWaiting.filter((user) => user !== user1);
-      const user2 = random_user(usersWaiting);
-      usersWaiting = usersWaiting.filter((user) => user !== user2);
+      const user2 = getMatch(usersWaiting, language);
+      if (user2 === null) {
+        return;
+      }
+
+      const user1 = usersWaiting.pop();
 
       const roomName = getRoomName();
 
-      io.to(user1).emit("match_found", { roomID: roomName, myID: user1 });
-      io.to(user2).emit("match_found", { roomID: roomName, myID: user2 });
+      io.to(user1.id).emit("match_found", { roomID: roomName, myID: user1.id });
+      io.to(user2.id).emit("match_found", { roomID: roomName, myID: user2.id });
 
       activeRooms.push(roomName);
       console.log("activeRooms:", activeRooms);
@@ -85,7 +100,7 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`user disconnected: ${socket.id}`);
-    usersWaiting = usersWaiting.filter((user) => user !== socket.id);
+    usersWaiting = usersWaiting.filter((user) => user.id !== socket.id);
     console.log("usersWaiting:", usersWaiting);
     activeRooms = activeRooms.filter((room) => !room.includes(socket.id));
     console.log("activeRooms:", activeRooms);
@@ -96,8 +111,7 @@ io.on("connection", (socket) => {
 //   console.log("listening on port:3001");
 // });
 
-
-const host = '10.10.100.165';
+const host = "10.10.100.165";
 const port = 3001;
 
 server.listen(port, host, () => {

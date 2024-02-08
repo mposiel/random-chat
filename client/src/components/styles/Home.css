@@ -1,56 +1,112 @@
 .content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    padding:1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 1em;
 }
 
 .content .head-text {
-    max-width: 600px;
-    margin-bottom: 1em;
+  max-width: 600px;
+  margin-bottom: 1em;
 }
 
 .content .head-text h1 {
-    font-size: 2rem;
-    color: #F0EBD8;
+  font-size: 2rem;
+  color: #f0ebd8;
 }
 
 .content .lower-text {
-    max-width: 600px;
-
+  max-width: 600px;
 }
 
 .content .lower-text p {
-    font-size: 1rem;
-    color: #F0EBD8;
-    margin-bottom: 2em;
-
+  font-size: 1rem;
+  color: #f0ebd8;
+  margin-bottom: 2em;
 }
 
-.content .lower-text button {
-    height: 2.4rem;
-    width: 9rem;
-    padding: 0.5em 1em;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-    color: #0d1321;
-    background-color: #F0EBD8;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.05s;
+.home-controls {
+  /* border: 1px solid #f0ebd8; */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; 
+  justify-content: center;
+  align-items: center;
+  max-width: 600px;
+  color: #f0ebd8;
+  background-color: #0d1321;
+  padding: 1em;
+  gap: 1em;
 }
 
-.content .lower-text button:hover {
-    font-size: 1.05rem;
+.language {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.content .lower-text button:active {
-    font-size: 1rem;
-    color: #0d1321;
-    background-color: #a7a7a7;
+.language p {
+  font-size: 1rem;
+  margin-bottom: 0.5em;
+  color: #f0ebd8;
 }
 
+.language select {
+  height: 2.4rem;
+  width: 11rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: center;
+  color: #f0ebd8;
+  background-color: #1a2132;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+  padding: 0.3em 0.6em;
+  outline: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.language select:focus {
+  background-color: #1a2132;
+  color: #f0ebd8;
+  outline: none;
+}
+
+.language select option {
+  background-color: #0d1321;
+  color: #f0ebd8;
+}
+
+.language select:hover {
+  background-color: #1a2132;
+}
+
+.home-controls button {
+  height: 2.5rem;
+  width: 11rem;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+  color: #0d1321;
+  background-color: #f0ebd8;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.05s;
+}
+
+.home-controls button:hover {
+  font-size: 1.05rem;
+}
+
+.home-controls button:active {
+  font-size: 1rem;
+  color: #0d1321;
+  background-color: #a7a7a7;
+}
