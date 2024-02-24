@@ -1,11 +1,12 @@
 import "./styles/Home.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../socket.jsx";
+import { LanguageContext } from "./contexts/languageContext.jsx";
 
 export const Home = ({ updateActiveState }) => {
   const navigate = useNavigate();
-  const [language, setLanguage] = useState("eng");
+  const {language, setLanguage} = useContext(LanguageContext);
 
   const startChat = () => {
     updateActiveState(true);

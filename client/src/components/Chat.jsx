@@ -6,11 +6,12 @@ import {
   mdiStopCircleOutline,
 } from "@mdi/js";
 import { mdiAccount } from "@mdi/js";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { Message } from "./Message.jsx";
 import Waiting from "./Waiting.jsx";
 import { ChatStop } from "./ChatStop.jsx";
 import { socket } from "../socket.jsx";
+import { LanguageContext } from "./contexts/languageContext.jsx";
 
 export const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -18,6 +19,7 @@ export const Chat = () => {
   const [loading, setLoading] = useState(true);
   const [stopChat, setStopChat] = useState(false);
   const [whoLeft, setWhoLeft] = useState("");
+  const {language, setLanguage} = useContext(LanguageContext);
 
   const roomID = useRef("");
   const userID = useRef("");
@@ -106,7 +108,7 @@ export const Chat = () => {
     setMessages([]);
     setMessageSent("");
     uniqueMessageKey.current = 0;
-    socket.emit("looking_for_match");
+    socket.emit("looking_for_match", { language });
   };
 
   return (

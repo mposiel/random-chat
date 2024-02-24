@@ -2,7 +2,6 @@ import "./App.css";
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  Link,
   Outlet,
   Route,
   RouterProvider,
@@ -10,10 +9,13 @@ import {
 } from "react-router-dom";
 import { Chat } from "./components/Chat";
 import { Home } from "./components/Home";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { LanguageContext } from "./components/contexts/languageContext.jsx";
+
 
 function App() {
   const [isActive, setIsActive] = useState(false);
+  const [language, setLanguage] = useState("eng");
 
   const updateActiveState = (newState) => {
     setIsActive(newState);
@@ -33,7 +35,9 @@ function App() {
 
   return (
     <div className="App">
-      <RouterProvider router={router} />
+      <LanguageContext.Provider value={{ language, setLanguage }}>
+        <RouterProvider router={router} />
+      </LanguageContext.Provider>
     </div>
   );
 }
