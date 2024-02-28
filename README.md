@@ -6,7 +6,7 @@ Welcome to the Random Chat Web Application! This application allows users to eng
 - **React.js**: Front-end library utilized for building the user interface and managing the application's components and state.
 - **Node.js**: Runtime environment for executing JavaScript code on the server-side.
 - **Express.js**: Web application framework for Node.js used to build the server-side logic.
-- - **Socket.io**: Used for real-time communication between the server and clients, enabling instant messaging functionality.
+- **Socket.io**: Used for real-time communication between the server and clients, enabling instant messaging functionality.
 
 ## Features:
 - **Random Chat**: Users are matched with random individuals for chat sessions.
