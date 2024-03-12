@@ -1,6 +1,6 @@
 # Random Chat Web Application
 
-Welcome to the Random Chat Web Application! This application allows users to engage in random chat conversations with other users in real-time.
+This application allows users to engage in random chat conversations with other users in real-time.
 
 ## Technologies Used:
 - **React.js**: Front-end library utilized for building the user interface and managing the application's components and state.
